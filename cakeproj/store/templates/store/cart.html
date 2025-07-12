@@ -1,1 +1,108 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
 
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <a class="btn btn-outline-dark" href="{% url 'cake_categories' %}">&#x2190; Continue Shopping</a>
+                <div>
+                    <h5>Items: <strong>{{ order.get_cart_items }}</strong></h5>
+                    <h5>Total: <strong>£{{ order.get_cart_total|floatformat:2 }}</strong></h5>
+                </div>
+                <a class="btn btn-success" href="{% url 'checkout' %}">Checkout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        {% for item in items %}
+        <div class="col-md-12 mb-4">
+            <div class="card shadow-sm" style="border-color: rgba(0, 255, 229, 255);">
+                <div class="card-body d-flex">
+                    <!-- Left side content (col-6) -->
+                    <div class="col-6 d-flex">
+                        <!-- Left: Image (25%) -->
+                        <div class="col-3">
+                            <img class="thumbnail" 
+                                src=" {% if item.imageURL %}
+                                        {{ item.imageURL }}
+                                      {% elif item.cake.imageURL %}
+                                        {{ item.cake.imageURL }}
+                                      {% endif %} "
+                            style="width: 100%; height: auto; object-fit: cover;">
+                        </div>
+            
+                        <!-- Left: Details (75%) -->
+                        <div class="col-9">
+                            <h6><strong>
+                                {% if item.name %}
+                                    {{ item.name }}
+                                {% elif item.cake %}
+                                    {{ item.cake.name }}
+                                {% endif %}
+                            </strong></h6><br>
+
+                            <p><strong>Size:</strong> {{ item.size }}<br>
+                            <strong>Sponge:</strong> {{ item.sponge }}<br>
+                            <strong>Price:</strong> £{{ item.price|floatformat:2 }}
+            
+                            <!-- Quantity and Total -->
+                            <div class="row w-100 d-flex align-items-center mt-3">
+                                <div class="col-6 d-flex flex-column align-items-start">
+                                    <p><strong>Quantity</strong></p>
+                                    <div class="quantity d-flex align-items-center">
+                                        <button type="button" class="chg-quantity qty-btn" data-cartCake="{{ item.cake.id }}" data-cartAction="remove" style="width: 30px;height:30px;">-</button>
+                                        &nbsp;<input type="text" name="qty" value="{{ item.quantity }}" style="width: 40px; height: 30px; text-align: center;" readonly>&nbsp;
+                                        <button type="button" class="chg-quantity qty-btn" data-cartCake="{{ item.cake.id }}" data-cartAction="add" style="width: 30px; height:30px;">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-6 text-left">
+                                    <p><strong>Total</strong></p>
+                                    <p>£{{ item.get_total|floatformat:2 }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            
+                    <!-- Right side content with Tabs -->
+                <div class="col-6 d-flex flex-column"">
+                    <div class="mytabs" style="width: 100%;">
+                        <!-- Tab container for each item, using a unique ID for each -->
+                        <input type="radio" id="tabproduct_{{ item.id }}" name="mytabs_{{ item.id }}" checked="checked" style="border-color: red;">
+                        <label for="tabproduct_{{ item.id }}" style="border-style: outset; border-color: white;">Product</label>
+                        <div class="tab">
+                            <p> {% if item.description %}
+                                    {{item.description }}
+                                {% elif item.cake.description %}
+                                    {{item.cake.description}}
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <input type="radio" id="tabingredients_{{ item.id }}" name="mytabs_{{ item.id }}">
+                        <label for="tabingredients_{{ item.id }}" style="border-style: outset; border-color: white;">Ingredients</label>
+                        <div class="tab">
+                            <p>
+                                {% if item.ingredients %}
+                                    {{item.ingredients }}
+                                {% elif item.cake.ingredients %}
+                                    {{item.cake.ingredients}}
+                            {% endif %}
+                            </p>
+                        </div>
+
+                        <input type="radio" id="tabterms_{{ item.id }}" name="mytabs_{{ item.id }}">
+                        <label for="tabterms_{{ item.id }}" style="border-style: outset; border-color: white;">Terms & Conditions</label>
+                        <div class="tab">
+                            <p>Track shipments, assign delivery partners, and manage logistics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock content %}
