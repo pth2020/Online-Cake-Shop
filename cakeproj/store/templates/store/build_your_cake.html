@@ -1,1 +1,154 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row" style="margin-left: 150px; width:80%; margin-top:50px;">
+    <div class="col-lg-6 col-md-8 col-sm-12">   
+        <div class="box-element" id="form-wrapper" style="margin-top: 20px;">
+            <img class="thumbnail" src="{{cake.imageURL}}" style="width:80%; height: 80%;">
+        </div>
+    </div>
+
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <div class="box-element" id="form-wrapper">
+            <h5><strong>{{cake.name}}</strong></h5>
+        </div>  
+
+        <div class="cart-details-container">
+            <div class="details-left">
+                <div class="cake-sizes">
+                    <!-- Size Drop-down -->
+                    <div class="form-group">
+                        <label for="size" class="form-label">Cake Size</label>
+                        <select id="size" name="size" class="form-select custom-select" aria-label="Select cake size">
+                            
+                            <option value="disabled selected">Select Size</option> <!-- Placeholder -->
+                            <option value="Small" data-size="Small" title="6-inches (approx. 4 - 6 servings)">6-inches (approx. 4 - 6 servings)</option>
+                            <option value="Medium" data-size="Medium" title="8-inches (approx. 8 - 10 servings)">8-inches (approx. 8 - 10 servings)</option>
+                            <option value="Large" data-size="Large" title="10-inches (approx. 20 - 24 servings)">10-inches (approx. 20 - 24 servings)</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="cake-sponge">
+                    <!-- Sponge Drop-down -->
+                    <div class="form-group">
+                        <label for="sponge" class="form-label">Sponge</label>
+                        <select id="sponge" name="sponge" class="form-select custom-select" aria-label="Select cake sponge">
+                            <option value="disabled selected">Select Sponge</option> <!-- Placeholder -->
+                            <option value="vanilla" data-sponge="vanilla" title="Classic Vanilla Sponge">Vanilla</option>
+                            <option value="chocolate" data-sponge="chocolate" title="Rich Chocolate Sponge">Chocolate</option>
+                            <option value="red_velvet" data-sponge="red_velvet" title="Moist Red Velvet Sponge">Red Velvet</option>
+                            <option value="carrot" data-sponge="carrot" title="Carrot Sponge with a hint of spice">Carrot</option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="details-right">
+                <div class="form-group">
+                    <label for="message" class="form-label">Personalized Message (Optional):</label>
+                    <textarea id="message" name="message" class="form-control" rows="6" placeholder="Enter your message here (max 40 characters)" maxlength="40"></textarea>
+                    
+                </div>
+                <div class="price">
+                    <h3>From £{{ cake.from_price|floatformat:2 }}</h3>
+                </div>                
+
+            </div>
+        </div>
+
+        <!-- Form for adding to cart -->
+        <form method="POST" action="{% url 'build_your_cake' %}" onsubmit="return validateForm();">
+            {% csrf_token %}
+            <input type="hidden" name="cake_id" value="{{cake.id}}">
+            <input type="hidden" id="selected_size" name="size">
+            <input type="hidden" id="selected_sponge" name="sponge">
+            <input type="hidden" name="quantity" id="quantity_input" value="1">
+            <input type="hidden" name="message" id="message_input">
+
+            <div style="display: flex; justify-content: center; margin-top: 15px;">
+                <button class="btn btn-outline-secondary" 
+                        style="width:100%; border-radius: 10px;" type="submit">Add to Cart</button>
+            </div>
+        </form>
+        
+    </div>
+</div> 
+
+<script> 
+    function getFocus() {
+        document.getElementById("message").focus();
+    }
+</script>
+
+<script>
+    // Function to handle the change in size selection
+    const sizeDropdown = document.getElementById('size');
+    sizeDropdown.addEventListener('change', function() {
+        document.getElementById('selected_size').value = this.value;
+    });
+
+    // Function to handle the change in sponge selection
+    const spongeDropdown = document.getElementById('sponge');
+    spongeDropdown.addEventListener('change', function() {
+        document.getElementById('selected_sponge').value = this.value;
+    });
+
+    // Add event listener for message input
+    const messageInput = document.getElementById('message');
+    messageInput.addEventListener('input', function() {
+        document.getElementById('message_input').value = messageInput.value;
+    });
+
+    // Form validation to ensure size and sponge are selected
+    function validateForm() {
+        if (!document.getElementById('selected_size').value || !document.getElementById('selected_sponge').value) {
+            alert("Please select both size and sponge type.");
+            return false;
+        }
+        return true;
+    }
+</script>
+
+<script>
+    // Update the existing item or create a new one with customizations
+    document.querySelectorAll('.update-existing-cart').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        const cakeId = this.dataset.cake;
+        const action = this.dataset.action;
+        const size = document.getElementById('selected_size').value;
+        const sponge = document.getElementById('selected_sponge').value;
+        const message = document.getElementById('message_input').value;
+
+        const data = {
+            cakeId: cakeId,
+            action: action,
+            size: size,
+            sponge: sponge,
+            message: message,
+        };
+
+        fetch('/update_item/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle response
+            if (data.message) {
+                location.reload();  // Reload page to reflect changes
+            }
+        });
+    });
+});
+</script>
+
+{% endblock content %}
 
