@@ -1,1 +1,21 @@
+{% extends 'main.html' %}
+{% load static %}
 
+{% block content %}
+
+<h2 class="my-5 text-center">Contact Us</h2>
+<div class="row" style="width:800px; margin-left: 250px;">
+<!-- Render the form manually with better structure -->
+<form method="post" style="width:700px; margin-left: 200px;">
+
+    {% csrf_token %}
+
+    {{form.as_p}}
+
+    <!-- Submit and Reset buttons -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="reset" class="btn btn-secondary">Reset</button>
+</form>
+</div>
+
+{% endblock %}
