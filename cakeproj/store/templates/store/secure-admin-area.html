@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
+    <title>Admin</title>
+    <meta name="csrf-token" content="{% csrf_token %}">
+</head>
+<body>
+    <div class="mytabs" style="width: 100%">
+        <input type="radio" id="taborder" name="mytabs" checked="checked">
+        <label for="taborder" style="border-style: outset; border-color: white;">Orders</label>
+        <div class="tab">
+            <div class="tabular--wrapper">
+                <h3 class="main--title">Order Transactions</h3>
+                <div class="table--container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Order</th>
+                                <th>Item Type</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th>Qty</th>
+                                <th>Sponge</th>
+                                <th>Message</th>
+                                <th>Customer</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                {% for item in page_obj_item %}
+                                <tr>
+                                    <td>{{item.date_added}}</td>
+                                    <td>{{item.order_id}}</td>
+                                    <td>{{item.cake}}</td>
+                                    <td>{{item.size}}</td>
+                                    <td>£{{item.price}}</td>
+                                    <td>{{item.quantity}}</td>
+                                    <td>{{item.sponge}}</td>
+                                    <td>{{item.message}}</td>
+                                    <td>{{item.order.customer}}</td>
+                                    <td>{{item.order.status}}</td>
+                                    <td><button  data-order="{{ item.order_id }}" class="btn btn-outline-secondary transaction-btn"
+                                            style="width:75px; height:25px; border-radius: 5px;">Ready
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        
+                    </table>
+                </div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <input type="radio" id="tabproduct" name="mytabs">
+        <label for="tabproduct" style="border-style: outset; border-color: white;">Products</label>
+        <div class="tab">
+            <p>View and manage all products in your catalog.</p>
+            <div class="card-wrapper">
+                <div class="card--container1">
+                    {% for bcake in birthday_cakes %}
+                    <div class="card--wrapper">
+                        <!-- Left side with text content -->
+                        <div class="card--left">
+                            <div class="name">
+                                <span class="type-name">{{ bcake.name }}</span>
+                            </div>
+                            <div class="price">
+                                <span><strong>Price: </strong>
+                                <span>From £{{ bcake.price }}</span>
+                            </div>
+                            <div class="description">
+                                <span><strong>Description: </strong></span>
+                                <span>{{ bcake.description }}</span>
+                            </div>
+                            <div class="ingredients">
+                                <span><strong>Ingredients: </strong></span>
+                                <span>{{ bcake.ingredients }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Right side with image -->
+                        <div class="card--right">
+                            <img src="{{ bcake.imageURL }}" alt="{{ bcake.name }}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="card--container2">
+                    {% for wcake in page_obj_wedding %}
+                    <div class="card--wrapper">
+                        <!-- Left side with text content -->
+                        <div class="card--left">
+                            <div class="name">
+                                <span class="type-name">{{ wcake.name }}</span>
+                            </div>
+                            <div class="price">
+                                <span><strong>Price: </strong></span>
+                                <span>From £{{ wcake.price }}</span>
+                            </div>
+                            <div class="description">
+                                <span><strong>Description: </strong></span>
+                                <span>{{ wcake.description }}</span>
+                            </div>
+                            <div class="ingredients">
+                                <span><strong>Ingredients: </strong></span>
+                                <span>{{ wcake.ingredients }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Right side with image -->
+                        <div class="card--right">
+                            <img src="{{ wcake.imageURL }}" alt="{{ wcake.name }}">
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <input type="radio" id="tabpreorderweddingcake" name="mytabs">
+        <label for="tabpreorderweddingcake" style="border-style: outset; border-color: white;">Pre-order Wedding Cakes</label>
+        <div class="tab">
+            <div class="tabular--wrapper">
+                <h3 class="main--title">Pre-order Wedding Cakes</h3>
+                <div class="table--container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date Ordered</th>
+                                <th>Date Required</th>
+                                <th>Wedding Cake</th>
+                                <th>Tiers</th>
+                                <th>Price</th>
+                                <th>Decoration</th>
+                                <th>Customer</th>
+                                <th>Message</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                            <tbody>
+                                {% for item in page_obj_wedding %}
+                                <tr>
+                                    <td>{{item.date_added}}</td>
+                                    <td>{{item.date_wanted}}</td>
+                                    <td>{{item.wedding_cake.name}}</td>
+                                    <td>{{item.wedding_cake.tiers}}</td>
+                                    <td>£{{item.wedding_cake.from_price}}</td>
+                                    <td>{{item.wedding_cake.description}}</td>
+                                    <td>{{item.customer}}</td>
+                                    <td>{{item.message}}</td>
+                                    <td>{{item.order.status}}</td>
+                                    <td><button  data-order="{{ item.order_id }}" class="btn btn-outline-secondary transaction-btn"
+                                            style="width:75px; height:25px; border-radius: 5px;">Ready
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </thead>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                        {% endif %}
+                
+                        <span class="current">
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                        </span>
+                
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">next</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+           
+        </div>
+        <input type="radio" id="tabcustomer" name="mytabs">
+        <label for="tabcustomer" style="border-style: outset; border-color: white;">Customers</label>
+        <div class="tab">
+            <h2>Customers</h2>
+            <p>View customer details, manage accounts, and track interactions.</p>
+        </div>
+        <input type="radio" id="tabstatistics" name="mytabs">
+        <label for="tabstatistics" style="border-style: outset; border-color: white;">Statistics</label>
+        <div class="tab">
+            <h2>Statistics</h2>
+            <p>Analyze sales trends, performance reports, and customer insights.</p>
+        </div>
+        <input type="radio" id="tabreviews&feedback" name="mytabs">
+        <label for="tabreviews&feedback" style="border-style: outset; border-color: white;">Reviews & Feedback</label>
+        <div class="tab">
+            <h2>Reviews and Feedback</h2>
+            <p>Monitor customer feedback and manage reviews.</p>
+        </div>
+        <input type="radio" id="tabdiscount&promotions" name="mytabs">
+        <label for="tabdiscount&promotions" style="border-style: outset; border-color: white;">Discounts and Promotions</label>
+        <div class="tab">
+            <h2>Discounts and Promotions</h2>
+            <p>Set up special offers, promo codes, and discounts.</p>
+        </div>
+    </div> 
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Find all "Ready" buttons
+            const transactionBtns = document.querySelectorAll('.transaction-btn');
+
+            // Loop through the buttons and add click event listeners
+            transactionBtns.forEach(button => {
+                const orderId = button.dataset.order;
+                const storageKey = `order_${orderId}_disabled`;
+
+                //Check if the button should be disabled
+                if (localStorage.getItem(storageKey) === 'true') {
+                    button.textContent = 'Collected';
+                    button.disabled = true;
+                    button.style.backgroundColor = '#d3d3d3'; // Optional: Change the button color to indicate it's been completed
+                }
+
+                button.addEventListener('click', function(event) {
+                    event.preventDefault(); // Prevent the default form submission behavior
+
+                    console.log("Update button clicked"); // Debug log to track button click
+                    console.log("OrderId selected:" + orderId);
+
+                    // Retrieve CSRF token from the meta tag
+                    const csrftoken = document.querySelector('[name=csrf-token]').content;
+
+                    // Call function to update the transaction
+                    updateTransaction(orderId, csrftoken, button, storageKey);
+                });
+            });
+
+            // Function to update transaction status
+            function updateTransaction(orderId, csrftoken, button, storageKey) {
+                const url = '/update_transaction_view/'; // The URL to update the transaction
+
+                // Send a POST request to the server to update the order status
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken, // CSRF token for security
+                    },
+                    body: JSON.stringify({
+                        'orderId': orderId,
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response data:', data); // Check server response
+                    if (data.status === 'success') {
+                        console.log("Order status updated successfully.");
+
+                        // Change button text to "Collected" and disable the button
+                        button.textContent = 'Collected';
+                        button.style.backgroundColor = '#d3d3d3'; // Optional: Change the button color to indicate it's been completed
+                        button.style.color = 'blue';
+                        button.disabled = true;
+                        // Store the disabled state in localStorage
+                        localStorage.setItem(storageKey, 'true');
+                        location.reload()
+                    } else {
+                        console.log("Error:", data.error);
+                    }
+                })
+                .catch(error => {
+                    console.log('Error:', error);
+                    alert('An error occurred while updating the status');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+

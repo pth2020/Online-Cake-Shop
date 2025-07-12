@@ -1,0 +1,123 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row justify-content-center mt-5" style="margin-left: 220px; width:1100px; margin-top:130px;">
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <!-- Sign-in / Sign-up Form -->
+        <div class="box-element" id="form-wrapper" style="background-color: #fff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <div id="sign-in-form" class="form-box">
+                <h2 id="title" class="text-center mb-4">Sign In</h2>
+                <form method="post" action="{% url 'signin' %}"  name="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="input-field mb-3">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="username" placeholder="Username" required class="form-control">
+                    </div>
+
+                    <div class="input-field mb-3">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" placeholder="Password" required class="form-control">
+                    </div>
+
+                    <div class="btn-field text-center mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+                    </div>
+                </form>
+                <p class="text-center">Don't have an account? <a href="#" id="show-sign-up" class="text-decoration-none">Sign Up</a></p>
+                {% if messages %}    
+                    {% for message in messages %}
+                        <p class="incorrect-username-or-password ">{{ message }}</p>
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            <!-- Sign-Up Form -->
+            <div id="sign-up-form" class="form-box hidden">
+                <h2 id="title" class="text-center mb-4">Sign Up</h2>
+                <form method="post" action="{% url 'store' %}" name="myForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="input-field mb-3">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="text" name="fullname" placeholder="Full name" required class="form-control">
+                    </div>
+
+                    <div class="input-field mb-3">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" name="email" placeholder="Email" required class="form-control">
+                    </div>
+
+                    <div class="input-field mb-3">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" name="username" placeholder="Username" required class="form-control">
+                    </div>
+
+                    <div class="input-field mb-3">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" name="password" placeholder="Password" required class="form-control">
+                    </div>
+
+                    <div class="btn-field text-center mb-3">
+                        <button type="submit" class="btn btn-success w-100">Sign up</button>
+                    </div>
+                </form>
+                <p class="text-center">Already have an account? <a href="#" id="show-sign-in" class="text-decoration-none">Sign In</a></p>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Summary Section -->
+    <div class="col-lg-6 col-md-12">
+        <div class="box-element" style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+            <h4>Your Account</h4><p>
+            Log in/create a new account.
+            <p><p>
+            By creating an account, you’ll be able to track your orders, save time with faster checkout, 
+            and access exclusive offers tailored just for you.
+            <hr>
+            <h4>Guest Checkout</h3><p>
+            <a href="{% url 'store'%}">Continue as a guest</a> or log in/create a new account.
+            <p><p>
+            As a guest, you can easily complete your purchase.            
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const signInForm = document.getElementById("sign-in-form");
+        const signUpForm = document.getElementById("sign-up-form");
+        const showSignUpLink = document.getElementById("show-sign-up");
+        const showSignInLink = document.getElementById("show-sign-in");
+
+        function showSignIn() {
+            signInForm.classList.add("visible");
+            signInForm.classList.remove("hidden");
+            signUpForm.classList.add("hidden");
+            signUpForm.classList.remove("visible");
+        }
+
+        function showSignUp() {
+            signUpForm.classList.add("visible");
+            signUpForm.classList.remove("hidden");
+            signInForm.classList.add("hidden");
+            signInForm.classList.remove("visible");
+        }
+
+        showSignUpLink.addEventListener("click", function(event) {
+            event.preventDefault();
+            showSignUp();
+        });
+
+        showSignInLink.addEventListener("click", function(event) {
+            event.preventDefault();
+            showSignIn();
+        });
+
+    // Initially show the sign-in form
+    showSignIn();
+    });
+
+</script>
+
+{% endblock content %}

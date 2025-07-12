@@ -1,0 +1,125 @@
+{% extends 'main.html' %} 
+{% load static %} 
+{% block content %}
+
+<h2 class="my-5 text-center">Wedding Cake Enquiry</h2>
+
+<div class="container my-5">
+    <div class="row g-0">
+        <!-- Left Column: Cake Image -->
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="d-flex justify-content-start mb-4"> <!-- Increase margin for better spacing -->
+                <a class="btn btn-outline-primary d-flex align-items-center px-4 py-2 rounded-pill" href="{% url 'cake_categories' %}" role="button">
+                    <i class="bi bi-arrow-left-circle-fill me-2"></i> <!-- Add Bootstrap Icons for a more professional arrow -->
+                    Back to Store
+                </a>
+            </div>           
+            <!-- Cake Image Section -->
+            <div class="box-element">
+                <img class="img-fluid rounded shadow-sm" style="width:90%; border-radius: 10px;" src="{{ cake.imageURL }}" alt="Wedding cake image" />
+            </div>
+        </div>
+
+        <!-- Right Column: Form -->
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="box-element">
+                <h5><strong>{{ cake.name }}</strong></h5>
+            </div>
+            <br>
+            <form method="post" action="{% url 'wedding_cake_booking' %}" name="myForm" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <input type="hidden" name="cake_id" id="cake_id" value="{{ cake.id }}" />
+
+                {% if not authenticated %}
+                    <!-- Fields for unauthenticated users: name and email -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" name="name" id="name" placeholder="Enter your name" required class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="email">Email &nbsp;<small>(used as username when you login)</small></label> 
+                                <input type="email" name="email" id="email" placeholder="Enter your email" required class="form-control" aria-describedby="emailHelp"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" name="password" id="password" placeholder="Enter your password" required class="form-control"/>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <!-- Date Required and Phone Number fields -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="date">Date Required</label>
+                            <input type="date" name="date" id="date" required class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" name="phone" id="phone" placeholder="Enter your phone number" required class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- House Number and Building Name fields -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="house-number">House Number</label>
+                            <input type="text" name="house-number" id="house-number" placeholder="Enter your house number" required class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="building-name">Building Name</label>
+                            <input type="text" name="building-name" id="building-name" placeholder="Enter your building name (optional)" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <!-- Street -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="street">Street</label>
+                            <input type="text" name="street" id="street" placeholder="Enter your street name" required class="form-control"/>
+                        </div>
+                    </div>
+                
+                    <!-- Postcode -->
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="postcode">Postcode</label>
+                            <input type="text" name="postcode" id="postcode" placeholder="Enter your postcode" required class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message -->
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea name="message" id="message" rows="3" class="form-control" placeholder="Write your message here"></textarea>
+                </div>
+
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-outline-secondary w-100 rounded">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+

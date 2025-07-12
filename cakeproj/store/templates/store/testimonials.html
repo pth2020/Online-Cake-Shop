@@ -1,0 +1,41 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}    
+<!-- Testimonials Section -->
+<h2 class="text-center mb-4">What Our Customers Are Saying</h2>
+<section id="testimonials" class="testimonial-container">    
+    <div class="row" style="width:1000px; margin-left:250px;">
+        <!-- Testimonial 1 -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <img src="{% static 'images/testimonial1.jpg' %}" class="card-img-top" alt="Customer Testimonial">
+                <div class="card-body">
+                    <h5 class="card-title">John Doe</h5>
+                    <p class="card-text">"Delta Cakes made our wedding cake and it was beyond perfect! The taste, the design, everything was exactly what we wanted. Highly recommend!"</p>
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial 2 -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <img src="{% static 'images/testimonial2.jpg' %}" class="card-img-top" alt="Customer Testimonial">
+                <div class="card-body">
+                    <h5 class="card-title">Jane Smith</h5>
+                    <p class="card-text">"The cupcakes from Delta Cakes were a hit at my birthday party! Everyone loved the flavors, and the decorations were beautiful. Will definitely order again!"</p>
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial 3 -->
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <img src="{% static 'images/testimonial3.jpg' %}" class="card-img-top" alt="Customer Testimonial">
+                <div class="card-body">
+                    <h5 class="card-title">Mark Johnson</h5>
+                    <p class="card-text">"Thank you Delta Cakes for the most delicious cake I've ever had! The rich chocolate flavor was amazing and everyone at the party was asking where I got it from."</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

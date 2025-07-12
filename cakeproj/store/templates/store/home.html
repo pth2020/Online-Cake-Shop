@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1" />
+    <title>Delta Cake Shop</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/landing_page.css' %}">
+    <!-- Font Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">    
+</head>
+
+<body>
+
+    <!-- Hamburger Menu -->
+    <div class="burger-menu" id="burger-menu">
+        <div>x</div>
+        <div>y</div>
+        <div>z</div>
+    </div>
+
+    <!-- Side Navigation -->
+    <div class="side-nav" id="side-nav">
+        <a href="#">Home</a>
+        <a href="#">Cakes</a>
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="overlay">
+            <div class="container">
+                <div class="row align-items-center" style="min-height: 100vh;">
+                    <div class="col-lg-12 text-white hero-text-container">
+                        <h1><strong>DELTA Cakes</strong></h1>
+                        <p style="line-height: 2.0; text-align: justify;" >
+                            We create exquisite wedding and birthday cakes that are as delicious
+                            as they are beautiful. Each cake is a unique masterpiece, designed
+                            to reflect your love story and style. Explore our collection and let
+                            us help make your special day unforgettable!
+                        </p>
+                        <p style="line-height: 2.0; text-align: justify;" >
+                            Every celebration deserves a delicious cake! We specialise in creating
+                            custom birthday cakes that bring joy and flavor to your special day.
+                            At Delta Cakes, we understand that each celebration is unique. Whether you're
+                            planning an elegant wedding or a fun-filled birthday party, our cakes are crafted
+                            to fit the theme and personality of your event. From classic designs to innovative
+                            creations, our cakes are not only a treat for the taste buds but a visual delight
+                            that will leave a lasting impression.
+                        </p>
+                        <p style="line-height: 2.0; text-align: justify;">
+                            With decades of experience, our team of expert bakers and designers is dedicated
+                            to creating cakes that not only meet but exceed your expectations. Let's make your
+                            next celebration a sweet success with Delta Cakes!
+                        </p>
+                        <a class="btn btn-outline-light mt-3" href="{% url 'cake_categories' %}">Explore our cakes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript for Toggle Hamburger Menu -->
+    <script>
+        const burgerMenu = document.getElementById("burger-menu");
+        const sideNav = document.getElementById("side-nav");
+
+        burgerMenu.addEventListener("click", () => {
+            sideNav.classList.toggle("open");
+        });
+    </script>
+
+</body>
+
+</html>
+
+
