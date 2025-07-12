@@ -1,1 +1,199 @@
+body {
+    background: #ccc;
+    font-family: 'Roboto', sans-serif;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
 
+.mytabs {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+/* Hide radio inputs */
+.mytabs input[type="radio"] {
+    display: none;
+}
+
+/* Tab Labels */
+.mytabs label {
+    flex: 1; /* Ensures equal width for all tabs */
+    text-align: center;
+    padding: 15px;
+    background: #e2e2e2;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    transition: background 0.3s ease;
+}
+
+/* Label Hover Effect */
+.mytabs label:hover {
+    background: #d1d1d1;
+}
+
+/* Tab Content */
+.mytabs .tab {
+    width: 100%;
+    padding: 20px;
+    background: #fff;
+    display: none;
+    order: 1;
+    border: 1px solid #ccc;
+    border-top: none;
+}
+
+/* Selected Tab */
+.mytabs input[type="radio"]:checked + label {
+    background: #fff;
+    font-weight: bold;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Show the Active Tab */
+.mytabs input[type="radio"]:checked + label + .tab {
+    display: block;
+}
+
+/* tabular section */
+.tabular--wrapper {
+    background: #D6D6D6;
+    margin-top: 1rem;
+    border-radius: 10px;
+    padding: 2rem;    
+}
+
+.table-container {
+    width: 100%
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #977DFF;
+    color: #333;
+}
+
+th {
+    padding: 15px;
+    text-align: left;
+}
+
+tbody {
+    background: #F0F0F0;
+}
+
+td {
+    padding: 15px;
+    font-size: 14px;
+    color: #333;
+}
+
+tr:nth-child(even){
+    background: #fff;
+
+}
+
+tfoot {
+    background: rgba(113, 99, 186, 255);
+    font-weight: bold;
+    color: #fff;
+}
+
+tfoot td {
+    padding: 16px;
+}
+
+.table-container button {
+    color: green;
+    background: none;
+    cursor: pointer;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.step-links a {
+    margin: 0 5px;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.step-links .current {
+    margin: 0 5px;
+    font-weight: bold;
+}
+
+/*Products */
+.card-wrapper {
+    display: flex;
+    justify-content: space-between; /* Ensures that the cards are spread out */
+    gap: 20px; /* Space between the cards */
+    flex-wrap: wrap; /* Allows wrapping if screen size is too small */
+}
+
+.card--container1, .card--container2 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Space between the cards */
+}
+
+.card--wrapper {
+    display: flex;
+    width: 48%; /* Each card wrapper takes up 48% of the parent width */
+    box-sizing: border-box; /* Prevents padding/margins from affecting the container's width */
+    background: #F0F0F0;
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.card--left {
+    width: 60%; /* Left side takes 60% of the card container */
+    padding-right: 1rem;
+}
+
+.card--right {
+    width: 35%; /* Right side (image) takes 35% of the card container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card--right img {
+    width: 100%; /* Makes the image fill the container */
+    height: auto; /* Maintains the image aspect ratio */
+    border-radius: 8px; /* Optional: rounded corners for the image */
+}
+
+.name, .price, .description, .ingredients {
+    margin: 5px 0; /* Adds a little space between the elements */
+}
+
+.name .type-name {
+    font-weight: bold;
+}
+
+.price, .description, .ingredients {
+    font-size: 14px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .card--wrapper {
+        flex-direction: column; /* Stack left and right sections on top of each other */
+        width: 100%; /* Full width for smaller screens */
+    }
+    .card--left, .card--right {
+        width: 100%; /* Both left and right sections take full width on small screens */
+        padding-right: 0;
+    }
+}
