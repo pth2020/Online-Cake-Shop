@@ -1,1 +1,40 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
 
+<!-- Search Section -->
+<div style="display: flex; justify-content: space-between; align-items: center; background-color: #F0F0F0;">
+    <div style="margin-left: 94px;"><a href="{% url 'home' %}" style="text-decoration: none; color:#000"> Home </a> &nbsp; 
+        / <a href="{% url 'cake_categories' %}" style="text-decoration: none; color:#000">Categories</a> &nbsp; / Birthday Cakes</div>
+    <div class="input-icons" style="position: relative; width: 300px; margin-right:15px;">
+        <i class="fa fa-search" aria-hidden="true" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%);"></i>
+        <form action="{% url 'search' %}" method="get">
+            <input type="text" name="query" id="searchInput" placeholder="Search.." 
+                style="padding-left: 35px; width:300px; height: 35px;border-radius: 5px; margin-top:8px; box-shadow: 2px 2px;">
+        </form>
+    </div>
+</div>
+
+<!-- Cake Selection Section -->
+<div class="row" style="width: 90%; margin-left: 70px; margin-right: 20px; margin-top: 8px;">
+    {% for birthday_cake in birthday_cakes %}
+        <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="margin-bottom: 12px;">
+            <div class="prod" style="background-color: #F0F0F0; box-shadow: 2px 3px #C8C8C8;">
+                <img class="cart-row" src="{{ birthday_cake.imageURL }}" style="width:280px; height:170px;">
+                <div class="box-element cake" style="margin-top: 10px;">
+                    <h6><strong>&nbsp;&nbsp;{{ birthday_cake.name }}</strong></h6>
+                    <p><h6 style="padding-right: 10px; padding-left:10px;">
+                            From<strong>&nbsp;&nbsp;£{{ birthday_cake.from_price|floatformat:2 }}</strong>
+                        </h6>
+                    </p>
+                    <div style="display: flex; justify-content: center; margin-top: 10px;">
+                        <button data-cake="{{ birthday_cake.id }}" data-action="add" class="btn btn-outline-secondary buy-now"
+                            data-url="{% url 'build_your_cake' %}" style="width:250px; border-radius: 10px;">Buy now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
