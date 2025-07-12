@@ -1,1 +1,86 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<!-- Image Slider Section -->
+<div class="image-slider" style="margin-bottom: 10px; margin-top: 8px;">
+    <div class="slider-images">
+        <img src="{% static 'images/wedding-cake1.jpg' %}" alt="Cake 1">
+        <img src="{% static 'images/birthday-cake3.png' %}" alt="Cake 3">
+    </div>
+</div>
+<div class="image-container ">
+    <img src="{% static 'images/decorating-line.jpg' %}" alt="Decorating line" class="full-width-image">
+</div>
+<div style="width: 90%; margin-left: 70px; margin-right: 20px; margin-top: 8px;">
+    <p>Explore our cake and party-decorating categories to find the perfect items for your celebration.</p>
+</div>
+
+<!-- Cake Selection Section -->
+<div class="row" style="width: 90%; margin-left: 70px; margin-right: 20px; margin-top: 8px;">
+    <!-- Wedding Cake Category -->
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="margin-bottom: 12px;">
+        <div class="prod" style="background-color: #fff; box-shadow: 0px 4px 10px #00000033;">
+            <a href="{% url 'wedding_cakes' %}">
+            <img class="cart-row" src="{% static 'images/wedding-cake-cat1.jpg' %}" style="width:280px; height:170px;">           
+            </a> 
+            <h6 style="text-align: center; margin-top: 10px; padding-bottom: 5px;">Wedding Cakes</h6>            
+        </div>
+    </div>
+    
+    <!-- Birthday Cake Category -->
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="margin-bottom: 12px;">
+        <div class="prod" style="background-color: #fff; box-shadow: 0px 4px 10px #00000033;">
+            <a href="{% url 'birthday_cakes' %}">
+            <img class="cart-row" src="{% static 'images/birthday-cake-cat2b.jpg' %}" style="width:280px; height:170px;">            
+            </a>
+            <h6 style="text-align: center; margin-top: 10px; padding-bottom: 5px;">Birthday Cakes</h6>            
+        </div>
+    </div>
+    
+    <!-- Cupcakes Category -->
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="margin-bottom: 12px;">
+        <div class="prod" style="background-color: #fff; box-shadow: 0px 4px 10px #00000033;">
+            <a href="{% url 'cupcakes' %}">
+            <img class="cart-row" src="{% static 'images/cupcakes-cat3.jpg' %}" style="width:280px; height:170px;">            
+            </a>
+            <h6 style="text-align: center; margin-top: 10px; padding-bottom: 5px;">Cupcakes</h6>             
+        </div>
+    </div>
+    
+    <!-- Party Decorating Category -->
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12" style="margin-bottom: 12px;">
+        <div class="prod" style="background-color: #fff; box-shadow: 0px 4px 10px #00000033;">
+            <a href="{% url 'party_decorating' %}">
+            <img class="cart-row" src="{% static 'images/party-decorating-cat4.jpg' %}" style="width:280px; height:170px;">            
+            </a>
+            <h6 style="text-align: center; margin-top: 10px; padding-bottom: 5px;">Party Decorating</h6>             
+        </div>
+    </div>
+
+{% endblock content %}
+
+<script>
+    // Wait for the DOM to load
+    document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('.slider-images img');
+    let currentIndex = 0;
+        
+    function showNextImage() {
+        // Hide the current image
+        images[currentIndex].style.opacity = 0;
+        
+        // Increment the index (reset to 0 if it's the last image)
+        currentIndex = (currentIndex + 1) % images.length;
+        
+        // Show the next image immediately
+            images[currentIndex].style.opacity = 1;
+        }
+        
+        // Set interval for image swap to happen instantly without delay
+        setInterval(showNextImage, 10000);  // Image swap every 30 seconds
+    });
+        
+        
+</script>
 
