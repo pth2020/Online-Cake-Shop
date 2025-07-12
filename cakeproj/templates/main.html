@@ -1,1 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1"/>
+    <title>Delata Cake Shop</title>
 
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+    <!-- Font Awesome-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <script type="text/javascript">
+        //Saves any logged in user in variable user
+		var user = '{{request.user}}'
+        
+		function getToken(name) {
+		    var cookieValue = null;
+            //if cookie exists and is not empty
+		    if (document.cookie && document.cookie !== '') {
+                //Creates an array of values
+		        var cookies = document.cookie.split(';');
+		        for (var i = 0; i < cookies.length; i++) { //could be for(let cookie of Cookies) {...}
+		            var cookie = cookies[i].trim();
+		            // Does this cookie string begin with the name we want?
+                    //if(cookie.startsWith(name + "="))
+		            if (cookie.substring(0, name.length + 1) === (name + '=')) { // e.g. name="JohnDoe"
+		                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		                break;
+		            }
+		        }
+		    }
+		    return cookieValue;
+		}
+		var csrftoken = getToken('csrftoken')
+
+		function getCookie(name) {
+		    // Split cookie string and get all individual name=value pairs in an array
+		    var cookieArr = document.cookie.split(";");
+
+		    // Loop through the array elements
+		    for(var i = 0; i < cookieArr.length; i++) {
+		        var cookiePair = cookieArr[i].split("=");
+
+		        /* Removing whitespace at the beginning of the cookie name
+		        and compare it with the given string */
+		        if(name == cookiePair[0].trim()) {
+		            // Decode the cookie value and return
+		            return decodeURIComponent(cookiePair[1]);
+		        }
+		    }
+
+		    // Return null if not found
+		    return null;
+		}
+
+        var cartCookie = getCookie('cart');
+
+        if (cartCookie) {//
+        //  \\054: This represents a backslash escape sequence. In a regular expression
+            cartCookie = cartCookie.replace(/\\054/g, ',');
+            console.log("Cart exists:", cartCookie);
+        } else {
+            console.log("No cart found.");
+        }
+
+        var cart = JSON.parse(cartCookie)
+        
+		if (cart == undefined){
+			cart = {}
+			console.log('Cart Created!', cart)
+            //Stringify (changes into JSON) the cart, sets domain to current (default) and path to root of the website
+            //path=/ - cookie available to the entite site
+			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+		}
+		
+	
+	</script>
+
+</head>
+
+<body> <!---->
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <header>
+            <ul class="navbar-left">
+                <li><a href="{% url 'home' %}"><img src="{% static 'images/delta_logo.png' %}" alt="Logo"></a></li>
+                <li><a href="{% url 'cake_categories' %}">Cakes</a></li>
+            </ul>
+            <ul class="navbar-right">
+                <li class="dropdown">
+                    {% if user.is_authenticated %}
+                        <!-- Profile Dropdown -->
+                        <a class="nav-link" href="#" id="profileIcon" aria-haspopup="true" aria-expanded="false">
+                            <img id="profile" src="{% static 'images/login1.png' %}" alt="Profile" class="rounded-circle" width="30" height="30">
+                            &nbsp;&nbsp;&nbsp;Welcome, {{ user.username }}
+                        </a>
+                        
+                        <ul class="dropdown-menu" id="dropdownMenu" aria-labelledby="profileIcon">
+                            <li><a class="dropdown-item" href="{% url 'store' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'signout' %}">Sign out</a></li>
+                        </ul>
+                        
+                    {% else %}
+                        <!-- Sign In Link -->
+                        <a class="nav-link" href="#" id="profileIcon" aria-haspopup="true" aria-expanded="false">
+                            <img id="profile" src="{% static 'images/login1.png' %}" alt="Profile" class="rounded-circle" width="30" height="30">
+                        </a>
+                        <ul class="dropdown-menu" id="dropdownMenu">
+                            <li><a class="dropdown-item" href="{% url 'store' %}">Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'signin' %}">Sign In</a></li>
+                        </ul>
+                    {% endif %}
+                </li>
+                <li>
+                    <a href="{% url 'cart' %}">
+                        <img id="cart-icon" src="{% static 'images/cart.png' %}" alt="Cart">
+                    </a>
+                    <p id="cart-total">{{ cartItems }}</p>
+                </li>
+            </ul>
+        </header>
+    </nav>
+
+    <!-- Custom JavaScript for Dropdown -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropdown = document.querySelector('.dropdown');
+            const dropdownMenu = dropdown.querySelector('.dropdown-menu');
+            const profileIcon = dropdown.querySelector('#profileIcon');
+
+            // Toggle dropdown menu visibility on profile icon click
+            profileIcon.addEventListener('click', (e) => {
+                e.preventDefault(); // Prevent the default action of the <a> tag
+                dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Close the dropdown if the user clicks outside of the dropdown menu
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target)) {
+                    dropdownMenu.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+    <!-- Content -->
+    <div class="content">
+        {% block content %} 
+    
+        {% endblock %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <!-- Custom Scripts -->
+    <script type="text/javascript" src="{% static 'js/cart.js' %}" defer></script>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-left">
+                <p>&copy; 2024 deltacakes.com</p>
+            </div>
+            <div class="footer-right">
+                <ul> 
+                    <li><a href="{% url 'contact' %}">Contact&nbsp;</a>&nbsp;|&nbsp;</li>
+                    <li><a href="{% url 'testimonials' %}">Testimonials&nbsp;</a>&nbsp;|&nbsp;</li>
+                    <li><a href="{% url 'gallery' %}">Gallery&nbsp;</a>&nbsp;|&nbsp;</li>
+                    <li><a href="#">Privacy Policy&nbsp;</a>&nbsp;|&nbsp;</li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript">
+
+        // Function to adjust footer position based on page height
+        function adjustFooterPosition() {
+            var footer = document.querySelector('footer');
+            var bodyHeight = document.body.scrollHeight;  // Total height of the document
+            var windowHeight = window.innerHeight;        // Height of the viewport (window)
+
+            if (bodyHeight < windowHeight) {
+                // If the body height is less than the window height, make footer fixed at the bottom
+                footer.style.position = 'fixed';
+                footer.style.bottom = '0';  // Push it to the bottom of the window
+                footer.style.width = '100%'; // Ensure full width
+            } else {
+                // If the body height is greater than the window height, make footer relative
+                footer.style.position = 'relative';
+                footer.style.bottom = '';  // Remove any bottom offset
+            }
+
+            // For cases where the content height is equal to the window height, ensure the footer stays at the bottom
+            if (bodyHeight === windowHeight) {
+                footer.style.position = 'absolute';
+                footer.style.bottom = '0';
+            }
+        }
+
+        // Call the function when the page loads
+        window.addEventListener('load', adjustFooterPosition);
+
+        // Optional: Call the function when the window is resized (to handle dynamic content resizing)
+        window.addEventListener('resize', adjustFooterPosition);
+    </script>
+</body>
+</html>
